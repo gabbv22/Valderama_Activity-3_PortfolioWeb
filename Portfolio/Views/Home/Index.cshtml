@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="hero-section">
+    <div class="hero-content">
+        <h1>Gabriel Valderama</h1>
+        <p class="mono-text">
+            Aspiring Software Developer. Specializing in C#, .NET, and modern web technologies.
+            Focused on building clean, efficient, and user-friendly applications.
+        </p>
+        <button class="btn-glow" onclick="location.href='@Url.Action("Contact", "Home")'">
+            Let's get started >
+        </button>
+    </div>
+    <div class="hero-image">
+        <img src="~/images/myphoto.jpg" alt="myphoto" />
+    </div>
+</div>

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "About Me";
+}
+
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>About Me</h1>
+        <p class="mono-text green-text">// Personal Profile</p>
+
+        <div class="about-text mt-4">
+            <p>
+                I’m a curious and hands-on learner who enjoys building things—whether it’s software, visual stories, or physical projects.
+                I value discipline and consistency, which I’ve developed through academics, sports, and creative work.
+            </p>
+            <p>
+                I like understanding how systems work from the ground up, and I’m always looking for ways to improve both my technical skills and creative expression.
+            </p>
+        </div>
+    </div>
+
+    <div class="hero-image">
+        <div id="character-container" style="width: 100%; height: 500px;"></div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+    const container = document.getElementById('character-container');
+
+    /*3d model practice */
+    // 1. Scene, Camera, Renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(renderer.domElement);
+
+    // 2. Add OrbitControls (The Click and Drag Feature)
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Makes the movement "smooth"
+    controls.dampingFactor = 0.05;
+    controls.enableZoom = true;    // Allows you to scroll to zoom
+    controls.autoRotate = false;   // Set to true if you want it to spin by itself until touched
+
+    // 3. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    scene.add(ambientLight);
+    const topLight = new THREE.DirectionalLight(0xffffff, 1);
+    topLight.position.set(5, 10, 7);
+    scene.add(topLight);
+
+    // 4. Model Loading
+    const loader = new THREE.GLTFLoader();
+    loader.load('/images/3dgab.glb', function (gltf) {
+        const model = gltf.scene;
+        scene.add(model);
+        model.position.y = 0;
+        model.scale.set(2.5, 2.5, 2.5);
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            controls.update();
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+    }, undefined, function (error) {
+        console.error("Model failed to load:", error);
+    });
+
+    camera.position.set(0, 0, 6);
+
+    window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+    });
+        controls.minPolarAngle = Math.PI / 4; // Limit looking up
+    controls.maxPolarAngle = Math.PI / 2; // Limit looking down (stops at floor level)
+</script>

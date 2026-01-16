@@ -1,0 +1,213 @@
+/* ===== 1. Global & Sticky Footer Layout ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: #000;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+
+/* ===== 2. Page Containers ===== */
+.page-container,
+.contact-page-wrapper {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+
+/* ===== 3. Typography & Theme ===== */
+.mono-text,
+.nav-link,
+.form-field,
+.btn-glow,
+.btn-send {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.green-text,
+ul li {
+    color: #4e9a06;
+}
+
+
+/* ===== 4. Navbar (Rounded) ===== */
+.custom-nav {
+    background-color: rgba(20, 20, 20, 0.95) !important;
+    border: 1px solid #222;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 50px !important;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+.navbar-nav .nav-link {
+    color: #888 !important;
+    font-size: 0.9rem;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+}
+
+    .navbar-nav .nav-link:hover {
+        color: #ffffff !important;
+    }
+
+
+/* ===== 5. Hero Section ===== */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 80px 0;
+    gap: 40px;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-image img {
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #1a1a1a;
+}
+
+
+/* ===== 6. Forms ===== */
+.form-input,
+.form-textarea,
+.form-field {
+    width: 100%;
+    background-color: #0f0f0f;
+    border: 1px solid #333;
+    padding: 15px;
+    color: #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-field:focus {
+        border-color: #4e9a06;
+    }
+
+.form-textarea,
+.field-area {
+    height: 150px;
+    resize: none;
+}
+
+
+/* ===== 7. Buttons ===== */
+.btn-glow,
+.btn-send {
+    background-color: #4e9a06;
+    color: white;
+    border: none;
+    padding: 15px 35px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(78, 154, 6, 0.4);
+    transition: all 0.3s ease;
+}
+
+    .btn-glow:hover,
+    .btn-send:hover {
+        box-shadow: 0 0 25px rgba(78, 154, 6, 0.7);
+        transform: translateY(-2px);
+        background-color: #5cb807;
+    }
+
+
+/* ===== 8. Skills Section ===== */
+.skills-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px 40px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+    ul li {
+        padding: 10px 0;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+
+/* ===== 9. Headings ===== */
+h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    color: #4e9a06;
+    letter-spacing: 0.5px;
+}
+
+
+/* ===== 10. Footer ===== */
+footer {
+    border-top: 1px solid #1a1a1a;
+    padding: 20px 0;
+    color: #666;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 60px 0;
+    gap: 50px; 
+}
+
+
+/*3d model practice*/
+.hero-image {
+    flex: 1;
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+}
+
+.car-viewer-container {
+    text-align: center;
+    margin: 40px 0;
+}
+
+#carCanvas {
+    border: 2px solid #1a1a1a;
+    border-radius: 8px;
+}

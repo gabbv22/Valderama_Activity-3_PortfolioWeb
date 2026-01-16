@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "3D Car Viewer";
+}
+
+<div class="car-viewer-wrapper">
+    <h1>3D Car Viewer</h1>
+    <div class="car-viewer-container">
+        <canvas id="carCanvas"></canvas>
+        <div class="color-picker-container">
+            <label for="colorPicker">Choose Car Color:</label>
+            <input type="color" id="colorPicker" value="#4e9a06">
+        </div>
+    </div>
+</div>
+
+<!-- Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/GLTFLoader.js"></script>
+
+<script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.158.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.158.0/examples/jsm/"
+        }
+    }
+</script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    // Scene setup
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x050505); // Slightly off-black to see shadows
+
+    const canvas = document.getElementById("carCanvas");
+    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    camera.position.set(4, 2, 4); // Better initial angle to see the car
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.toneMapping = THREE.ReinhardToneMapping; // Improves lighting quality
+
+    // OrbitControls
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Lights - Boosted for Dark Models
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+    scene.add(ambientLight);
+
+    const topLight = new THREE.DirectionalLight(0xffffff, 2);
+    topLight.position.set(5, 10, 5);
+    scene.add(topLight);
+
+    // Load car model
+    const loader = new GLTFLoader();
+    let carBody = null;
+
+    loader.load('/images/rx8.glb', function(gltf) {
+        const car = gltf.scene;
+
+        // Auto-center and scale model
+        const box = new THREE.Box3().setFromObject(car);
+        const center = box.getCenter(new THREE.Vector3());
+        car.position.sub(center);
+
+        scene.add(car);
+
+        // Find car body for color picker
+        car.traverse(node => {
+            if(node.isMesh) {
+                // Console log names to find the exact "body" part if it fails
+                console.log("Mesh found:", node.name);
+                if(node.name.toLowerCase().includes("body") || node.name.toLowerCase().includes("paint")) {
+                    carBody = node;
+                }
+            }
+        });
+    }, undefined, (error) => console.error('Error:', error));
+
+    // Color picker
+    const colorPicker = document.getElementById("colorPicker");
+    colorPicker.addEventListener("input", e => {
+        if(carBody) {
+            carBody.material.color.set(e.target.value);
+        }
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Fix Resize logic
+    window.addEventListener('resize', () => {
+        const width = canvas.parentElement.clientWidth;
+        camera.aspect = width / 500;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, 500);
+    });
+</script>
+
+<style>
+    .car-viewer-wrapper {
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .car-viewer-container {
+        display: inline-block;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .color-picker-container {
+        margin-top: 15px;
+        color: #ccc;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    #carCanvas {
+        width: 100%; /* Makes it responsive to the container */
+        max-width: 1000px;
+        height: 500px;
+        background: radial-gradient(#222, #000); /* Adds a floor effect */
+        border: 1px solid #333;
+    }
+</style>
